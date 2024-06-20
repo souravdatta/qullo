@@ -29,7 +29,6 @@ newCircuit :: Int -> Int -> Circuit
 newCircuit n ls = Circuit {numRegisters = n, layers = replicate ls (replicate n i)}
 
 instance Show Circuit where
-  show :: Circuit -> String
   show (Circuit nr ls) = "Q(" ++ show nr ++ ")\n" ++ show ls
 
 updateOne :: [a] -> Int -> a -> [a]
@@ -46,4 +45,4 @@ insertGate :: (Int, Int) -> QMat -> Circuit -> Circuit
 insertGate (nl, nr) g (Circuit numReg lrs) = Circuit numReg (update lrs (nl, nr) g)
 
 runCircuit :: Circuit -> QMat -> QMat
-runCircuit (Circuit _ lrs) input = foldl (\m l -> gate (foldl1 (<=>) (reverse l)) m) input lrs
+runCircuit (Circuit _ lrs) input = foldl (\m l -> gate (layer (reverse l)) m) input lrs
